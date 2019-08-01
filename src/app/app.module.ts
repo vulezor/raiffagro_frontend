@@ -6,21 +6,19 @@ import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { SharedModule } from "./shared/shared.module";
-import { AlertModule } from "ngx-bootstrap";
 
 const MODULES = [
   BrowserModule,
   BrowserAnimationsModule,
   AppRoutingModule,
   HttpClientModule,
-  AppRoutingModule,
   SharedModule.forRoot()
 ];
 
 @NgModule({
   declarations: [AppComponent],
   imports: [...MODULES],
-  providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: []
 })
 export class AppModule {}
