@@ -9,10 +9,16 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
   public formGroup = this.fb.group({
-    email: ['', Validators.required],
-    password: ['', Validators.required]
+    email: [null, Validators.required],
+    password: [null, Validators.required]
   });
   constructor(private loginService: LoginApiService, private fb: FormBuilder) {}
+
+  public loginOnSubmit() {
+    this.loginService
+      .login(this.formGroup.getRawValue())
+      .subscribe(user => console.log(user));
+  }
 
   ngOnInit() {}
 }

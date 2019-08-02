@@ -12,7 +12,7 @@
     </div>
 
     <!-- Login Form -->
-    <form [formGroup]="this.formGroup">
+    <form [formGroup]="this.formGroup" (ngSubmit)="loginOnSubmit()">
       <input
         type="text"
         id="email"
