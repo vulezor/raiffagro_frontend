@@ -1,0 +1,8 @@
+{
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "editor.autoSurround": "never",
+    "editor.autoClosingQuotes": "never",
+    "prettier.eslintIntegration": true,
+    "prettier.tslintIntegration": true
+}

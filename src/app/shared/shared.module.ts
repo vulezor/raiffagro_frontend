@@ -1,5 +1,6 @@
-import { NgModule, ModuleWithProviders } from "@angular/core";
-import { CommonModule } from "@angular/common";
+import { NgModule, ModuleWithProviders } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   AccordionModule,
   AlertModule,
@@ -18,10 +19,12 @@ import {
   TimepickerModule,
   TooltipModule,
   TypeaheadModule
-} from "ngx-bootstrap";
+} from 'ngx-bootstrap';
 
 const MODULES = [
   CommonModule,
+  ReactiveFormsModule,
+  FormsModule,
   AccordionModule.forRoot(),
   AlertModule.forRoot(),
   ButtonsModule.forRoot(),
@@ -42,6 +45,8 @@ const MODULES = [
   CommonModule
 ];
 const EXPORTMODULES = [
+  ReactiveFormsModule,
+  FormsModule,
   AccordionModule,
   AlertModule,
   ButtonsModule,
