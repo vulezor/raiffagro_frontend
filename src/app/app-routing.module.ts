@@ -5,7 +5,7 @@ const routes: Routes = [
   // {
   //   path: "",
   //   loadChildren: () =>
-  //     import("./platform/platform.module").then(m => m.PlatformModule)
+  //     import("./application/application.module").then(m => m.ApplicationModule)
   // },
   {
     path: 'public',

@@ -12,6 +12,10 @@ export class LoginApiService {
   public login(login: LoginData): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}api/login`, login);
   }
+
+  public getCurrentUser(){
+    return this.http.get<User>(`${this.baseUrl}api/get_current_user`);
+  }
 }
 
 interface LoginData {

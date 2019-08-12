@@ -4,14 +4,14 @@ import {
   Optional,
   SkipSelf,
   APP_INITIALIZER,
-  ErrorHandler
+  ErrorHandler,
 } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
-import { AuthService, HttpInterceptorService } from '@mdz/services';
-
+import { AuthService, HttpInterceptorService, TokenStorageService } from '@mdz/services';
+import { LocalStorageService } from './services/local-storage.service'
 const MODULES = [
   CommonModule,
   FormsModule,
@@ -26,7 +26,8 @@ const SERVICES = [
   {
     provide: HTTP_INTERCEPTORS,
     useClass: HttpInterceptorService,
-    multi: true
+    multi: true,
+    LocalStorageService
   }
 ];
 
@@ -52,7 +53,10 @@ export class CoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CoreModule,
-      providers: [{ provide: AuthService, useClass: AuthService }]
+      providers: [
+        { provide: AuthService, useClass: AuthService },
+        { provide: TokenStorageService, useClass: TokenStorageService }
+      ]
     };
   }
 }
