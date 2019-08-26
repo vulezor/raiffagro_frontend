@@ -3,9 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   // {
-  //   path: "",
+  //   path: '',
   //   loadChildren: () =>
-  //     import("./application/application.module").then(m => m.ApplicationModule)
+  //     import('./application/application.module').then(m => m.ApplicationModule)
   // },
   {
     path: 'public',
@@ -22,7 +22,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forRoot(routes, {
       scrollPositionRestoration: 'enabled',
-      anchorScrolling: 'enabled'
+      anchorScrolling: 'enabled',
+      useHash: true
     })
   ],
   exports: [RouterModule]

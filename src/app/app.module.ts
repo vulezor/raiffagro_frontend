@@ -6,6 +6,7 @@ import { CoreModule } from './core/core.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 const MODULES = [
   BrowserModule,
@@ -20,6 +21,6 @@ const MODULES = [
   declarations: [AppComponent],
   imports: [...MODULES],
   bootstrap: [AppComponent],
-  providers: []
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }]
 })
 export class AppModule {}

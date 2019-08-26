@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { LoginApiService } from 'app/api/login-api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { TokenData, User } from '@mdz/models';
+import { TokenStorageService } from '@mdz/services';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -19,7 +22,14 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.loginService
       .login(this.formGroup.getRawValue())
       .pipe(untilDestroyed(this))
-      .subscribe(user => console.log(user));
+      .subscribe((data: { user: User; token_data: TokenData }) => {
+        TokenStorageService;
+        // localStorage.setItem(
+        //   'Authentification',
+        //   JSON.stringify(data.token_data)
+        // ); // console.log(user)
+        // localStorage.setItem('UserInfo', JSON.stringify(data.user)); // console.log(user)
+      });
   }
 
   ngOnInit() {}
