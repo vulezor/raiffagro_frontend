@@ -36,7 +36,7 @@ export class AuthService {
   private getUser(): Observable<any> {
     const apiObserver = this.loginService.getCurrentUser();
     return apiObserver.pipe(
-      tap(s => this.currentUser.next)
+      tap(s => this.currentUser.next())
     )
   }
 
