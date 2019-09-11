@@ -8,13 +8,26 @@ import {
   HttpEvent,
   HttpHeaders
 } from '@angular/common/http';
-import { NEVER, Observable, ReplaySubject, throwError } from 'rxjs';
+import {
+  NEVER,
+  Observable,
+  ReplaySubject,
+  throwError,
+  BehaviorSubject
+} from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { TokenStorageService } from '../core/services/token-storage.service';
+import { TokenInfo } from '@mdz/models';
+import { TypeaheadOptions } from 'ngx-bootstrap';
 @Injectable({
   providedIn: 'root'
 })
 export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
-  constructor(private tokens: TokenStorageService) {}
+  private isRefreshingToken = false;
+  private tokenSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  constructor(private tokens: TokenStorageService, private http: HttpClient) {}
 
   private setHeaders(request: HttpRequest<any>) {
     return (request = request.clone({
@@ -38,6 +51,33 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
     }
 
     return next.handle(this.setHeaders(request));
+  }
+
+  private handleExpiredAccessToken(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ) {
+    if (!this.isRefreshingToken) {
+      this.isRefreshingToken = true;
+      this.tokenSubject.next(false);
+
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const position = request.url.search('/api/');
+      const baseUrl = request.url.substring(0, position);
+      const refreshUrl = `${baseUrl}/api/refresh_token`;
+      return this.http
+        .post<TokenInfo>(refreshUrl, `"${this.tokens.getRefreshToken()}"`, {
+          headers
+        })
+        .pipe(data => {
+          switchMap(data => {
+            if (data) {
+              this.tokenSubject.next(true);
+              return next.handle(this.setHeaders(request));
+            }
+          });
+        });
+    }
   }
 
   ngOnDestroy() {}
