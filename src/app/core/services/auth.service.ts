@@ -39,6 +39,16 @@ export class AuthService {
     return apiObserver.pipe(tap(s => this.currentUser.next(s.data)));
   }
 
+  public tryAutoLogin(): Observable<any> {
+    if (
+      this.tokens.getAuthentificationToken() &&
+      this.tokens.getRefreshToken()
+    ) {
+      console.log('attemp auto-login');
+      return this.api.get<string>('');
+    }
+  }
+
   // public refreshStatus(): Observable<any> {
   //   const status = this.loginService.getCurrentUser<User>();
   //   return status.pipe(
