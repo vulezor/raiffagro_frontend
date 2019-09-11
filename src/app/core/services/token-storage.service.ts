@@ -21,7 +21,7 @@ export class TokenStorageService {
    * @param tokens
    */
   public updateTokens(tokens: TokenInfo) {
-    if (tokens == null) {
+    if (tokens === null) {
       tokens = new TokenInfo();
     }
 
@@ -29,14 +29,18 @@ export class TokenStorageService {
       this.localStorageService.removeItem(this.REFRESH_TOKEN_KEY);
       this.localStorageService.removeItem(this.AUTHENTIFICATION_TOKEN_KEY);
     } else {
-      this.localStorageService.setItem(
-        this.REFRESH_TOKEN_KEY,
-        tokens.refreshToken
-      );
-      this.localStorageService.setItem(
-        this.AUTHENTIFICATION_TOKEN_KEY,
-        tokens.authentificationToken
-      );
+      if (tokens.refreshToken) {
+        this.localStorageService.setItem(
+          this.REFRESH_TOKEN_KEY,
+          tokens.refreshToken.toString()
+        );
+      }
+      if (tokens.authentificationToken) {
+        this.localStorageService.setItem(
+          this.AUTHENTIFICATION_TOKEN_KEY,
+          tokens.authentificationToken.toString()
+        );
+      }
     }
   }
 

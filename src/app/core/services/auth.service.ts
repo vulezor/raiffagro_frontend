@@ -10,7 +10,7 @@ import { TokenStorageService } from './token-storage.service';
 
 @Injectable()
 export class AuthService {
-  private currentUser: ReplaySubject<User> = new ReplaySubject<User>(1);
+  public currentUser: ReplaySubject<User> = new ReplaySubject<User>(1);
 
   constructor(
     private loginService: LoginApiService,
@@ -20,11 +20,12 @@ export class AuthService {
   public login(loginCredentials: LoginCredentials) {
     return this.loginService.login(loginCredentials).pipe(
       switchMap((loginData: { user: User; token_data: TokenData }) => {
+        console.log('loginData', loginData);
         const tokenInfo = new TokenInfo();
         tokenInfo.authentificationToken = loginData.token_data.access_token;
         tokenInfo.refreshToken = loginData.token_data.refresh_token;
         this.tokens.updateTokens(tokenInfo);
-        return this.
+        return this.getUser().pipe(switchMap(r => of(true)));
       }),
       catchError(e => {
         this.tokens.updateTokens(null);
@@ -35,13 +36,13 @@ export class AuthService {
 
   private getUser(): Observable<any> {
     const apiObserver = this.loginService.getCurrentUser();
-    return apiObserver.pipe(
-      tap(s => this.currentUser.next())
-    )
+    return apiObserver.pipe(tap(s => this.currentUser.next(s.data)));
   }
 
-
   // public refreshStatus(): Observable<any> {
-  //   const status = this
+  //   const status = this.loginService.getCurrentUser<User>();
+  //   return status.pipe(
+  //     tap((s => this.currentUser.next(s), err => console.log(err)))
+  //   );
   // }
 }

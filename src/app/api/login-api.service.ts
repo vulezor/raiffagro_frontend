@@ -17,7 +17,7 @@ export class LoginApiService {
   }
 
   public getCurrentUser() {
-    return this.http.get<User>(`${this.baseUrl}api/get_current_user`);
+    return this.http.get(`${this.baseUrl}api/get_current_user`);
   }
 }
 

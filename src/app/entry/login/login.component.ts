@@ -3,32 +3,29 @@ import { LoginApiService } from 'app/api/login-api.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TokenData, User } from '@mdz/models';
-import { TokenStorageService } from '@mdz/services';
-
+import { AuthService } from '@mdz/services';
+import { TokenStorageService } from 'app/core/services/token-storage.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [LoginApiService]
+  providers: [LoginApiService, AuthService]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   public formGroup = this.fb.group({
     email: [null, Validators.required],
     password: [null, Validators.required]
   });
-  constructor(private loginService: LoginApiService, private fb: FormBuilder) {}
+  constructor(private authService: AuthService, private fb: FormBuilder) {
+    this.authService.currentUser.subscribe(u => console.log(u));
+  }
 
   public loginOnSubmit() {
-    this.loginService
+    this.authService
       .login(this.formGroup.getRawValue())
       .pipe(untilDestroyed(this))
-      .subscribe((data: { user: User; token_data: TokenData }) => {
-        TokenStorageService;
-        // localStorage.setItem(
-        //   'Authentification',
-        //   JSON.stringify(data.token_data)
-        // ); // console.log(user)
-        // localStorage.setItem('UserInfo', JSON.stringify(data.user)); // console.log(user)
+      .subscribe(data => {
+        console.log('Data', data);
       });
   }
 
