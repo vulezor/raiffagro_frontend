@@ -15,6 +15,7 @@ import { map, tap, switchMap } from 'rxjs/operators';
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
   private isLoggedin: Observable<boolean>;
+
   constructor(private authService: AuthService, private router: Router) {
     this.isLoggedin = this.authService
       .tryAutoLogin()
@@ -22,14 +23,39 @@ export class AuthGuard implements CanActivate, CanLoad {
   }
 
   private getLoggedInStatus() {
-    return this.authService.currentUser().pipe(
+    return this.authService.getCurrentUser().pipe(
       map(s => s != null),
       tap(s => {
         console.log(`logged in status of user ${s}`);
       })
     );
   }
-  public canActivate() {}
 
-  public canLoad() {}
+  // inherit
+  public canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    return this.handleLoginRedirect(state.url);
+  }
+
+  // inherit
+  public canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ): Observable<boolean> | Promise<boolean> | boolean {
+    const url = segments.map(segment => segment.path).join('/');
+    return this.handleLoginRedirect(url);
+  }
+
+  private handleLoginRedirect(url: string): Observable<boolean> | boolean {
+    return this.isLoggedin.pipe(
+      tap(loggedIn => {
+        if (!loggedIn) {
+          this.authService.setRedirectUrl(url);
+          this.router.navigate(['public/login']);
+        }
+      })
+    );
+  }
 }

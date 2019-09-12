@@ -34,7 +34,9 @@ import { Router } from '@angular/router';
 })
 export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
   private isRefreshingToken = false;
-  private tokenSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private tokenSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
   constructor(
     private tokens: TokenStorageService,
     private router: Router,
@@ -67,16 +69,16 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
     } else {
       return next.handle(this.setHeaders(request)).pipe(
         catchError(
-          (error:HttpErrorResponse): Observable<HttpEvent<any>> => {
-            switch ((<HttpErrorResponse>error).status){
+          (error: HttpErrorResponse): Observable<HttpEvent<any>> => {
+            switch ((error as HttpErrorResponse).status) {
               case 401:
                 return this.handleExpiredAccessToken(request, next);
-                default:
-                  return this.handleErrorAndRetry(request, next, error);
+              default:
+                return this.handleErrorAndRetry(request, next, error);
             }
-          })
+          }
         )
-      )
+      );
     }
     return next.handle(this.setHeaders(request));
   }

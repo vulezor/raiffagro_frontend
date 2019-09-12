@@ -16,7 +16,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@mdz/models": ["app/shared/models/_index"],
-      "@mdz/services": ["app/core/services/_index"]
+      "@mdz/services": ["app/core/services/_index"],
+      "@mdz/guards": ["app/core/guards/_index"]
     }
   },
   "exclude": ["node_modules"]

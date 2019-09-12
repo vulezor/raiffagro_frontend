@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: [null, Validators.required]
   });
   constructor(private authService: AuthService, private fb: FormBuilder) {
-    this.authService.currentUser.subscribe(u => console.log(u));
+    this.authService.getCurrentUser().subscribe(u => console.log(u));
   }
 
   public loginOnSubmit() {

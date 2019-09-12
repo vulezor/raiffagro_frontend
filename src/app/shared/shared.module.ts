@@ -20,6 +20,8 @@ import {
   TooltipModule,
   TypeaheadModule
 } from 'ngx-bootstrap';
+import { LoginApiService } from 'app/api/login-api.service';
+import { AuthGuard } from '@mdz/guards';
 
 const MODULES = [
   CommonModule,
@@ -76,7 +78,7 @@ export class SharedModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SharedModule,
-      providers: []
+      providers: [LoginApiService, AuthGuard]
     };
   }
 }
