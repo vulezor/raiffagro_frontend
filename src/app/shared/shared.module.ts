@@ -1,6 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import {
   AccordionModule,
   AlertModule,
@@ -22,7 +23,9 @@ import {
 } from 'ngx-bootstrap';
 import { LoginApiService } from 'app/api/login-api.service';
 import { AuthGuard } from '@mdz/guards';
+import { MainMenuComponent } from './components/layouts/main-menu/main-menu.component';
 
+const COMPONENTS = [MainMenuComponent];
 const MODULES = [
   CommonModule,
   ReactiveFormsModule,
@@ -68,7 +71,7 @@ const EXPORTMODULES = [
   TypeaheadModule
 ];
 @NgModule({
-  declarations: [],
+  declarations: [...COMPONENTS],
   imports: [...MODULES],
   exports: [...EXPORTMODULES],
   providers: [],

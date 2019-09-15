@@ -1,0 +1,54 @@
+#header {
+  height: 30px;
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  background: linear-gradient(#444444, #333333);
+  color: #bbbbbb;
+}
+
+.header-fixed {
+  top: 0;
+  position: fixed;
+  z-index: 2;
+}
+
+#headerContent {
+  margin-left: 10px;
+}
+
+#page {
+  display: flex;
+  background-color: green;
+  height: 100%;
+}
+
+.page-fixed {
+  margin-top: 30px;
+}
+
+#sideBar {
+  min-height: 100%;
+  background: red;
+  display: block;
+  position: relative;
+}
+.sidebar-content {
+  background: red;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.sidebar-fixed {
+  position: fixed;
+  top: 30;
+  left: 0;
+  height: calc(100vh - 30px);
+}
+
+#content {
+  width: 100%;
+  min-height: calc(100vh - 30px);
+  background: blue;
+}

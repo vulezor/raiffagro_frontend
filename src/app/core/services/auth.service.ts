@@ -7,6 +7,7 @@ import { LoginApiService } from 'app/api/login-api.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { switchMap, catchError, tap, take } from 'rxjs/operators';
 import { TokenStorageService } from './token-storage.service';
+import { Router } from '@angular/router';
 const DEFAULT_REDIRECT_URL = '/';
 @Injectable()
 export class AuthService {
@@ -17,7 +18,8 @@ export class AuthService {
   );
   constructor(
     private loginService: LoginApiService,
-    private tokens: TokenStorageService
+    private tokens: TokenStorageService,
+    private router: Router
   ) {
     this.currentUser.next(null);
   }
@@ -36,6 +38,12 @@ export class AuthService {
         return of(false);
       })
     );
+  }
+
+  public logout() {
+    this.tokens.clearTokens();
+    this.currentUser.next(null);
+    this.router.navigate(['/public/login']);
   }
 
   private setUser(): Observable<any> {
@@ -58,8 +66,16 @@ export class AuthService {
     return of('');
   }
 
+  public getRedirectUrl() {
+    return this.redirectUrl.asObservable();
+  }
+
   public setRedirectUrl(url: string) {
-    this.redirectUrl.asObservable();
+    this.redirectUrl.next(url);
+  }
+
+  public resetRedirectUrl() {
+    this.redirectUrl.next(DEFAULT_REDIRECT_URL);
   }
 
   // public refreshStatus(): Observable<any> {

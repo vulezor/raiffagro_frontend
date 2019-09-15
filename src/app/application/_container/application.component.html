@@ -1,3 +1,23 @@
-<p>
-  application works!
-</p>
+<div id="header" [ngClass]="{ 'header-fixed': fixed }">
+  <div id="headerContent">
+    Desktop
+  </div>
+</div>
+<div id="page" [ngClass]="{ 'page-fixed': fixed }">
+  <div id="sideBar" [@openClose]="isOpen ? 'open' : 'closed'">
+    <div
+      class="sidebar-content"
+      [ngClass]="{ 'sidebar-fixed': fixed }"
+      [@openClose]="isOpen ? 'open' : 'closed'"
+    >
+      <ul>
+        <li>box 1</li>
+        <li><i class="fab fa-algolia"></i>box 2</li>
+      </ul>
+    </div>
+  </div>
+  <div id="content">
+    <input type="checkbox" [(ngModel)]="this.fixed" />
+    <button (click)="toggle()">Press me</button>
+  </div>
+</div>

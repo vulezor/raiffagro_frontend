@@ -59,7 +59,7 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
     if (
       !request.url.includes('/api/') ||
       request.url.includes('/assets/') ||
-      request.url.includes('/auth/token/refresh')
+      request.url.includes('/api/refresh_token')
     ) {
       return next.handle(request);
     }
@@ -96,12 +96,16 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
       const baseUrl = request.url.substring(0, position);
       const refreshUrl = `${baseUrl}/api/refresh_token`;
       return this.http
-        .post<TokenInfo>(refreshUrl, `"${this.tokens.getRefreshToken()}"`, {
+        .post<any>(refreshUrl, `${this.tokens.getRefreshToken()}`, {
           headers
         })
         .pipe(
           switchMap(data => {
             if (data) {
+              this.tokens.updateTokens({
+                authentificationToken: data.access_token,
+                refreshToken: data.refresh_token
+              });
               this.tokenSubject.next(true);
               return next.handle(this.setHeaders(request));
             }
@@ -134,6 +138,7 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
     if (
       (error as HttpErrorResponse).status === 401 ||
       (error as HttpErrorResponse).status === 401 ||
+      (error as HttpErrorResponse).status === 500 ||
       this.tokens.getRefreshToken() === null
     ) {
       this.navigateToLoginAndClearTokens();

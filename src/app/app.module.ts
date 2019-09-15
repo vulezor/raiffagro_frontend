@@ -7,6 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const MODULES = [
   BrowserModule,
@@ -14,7 +15,8 @@ const MODULES = [
   AppRoutingModule,
   HttpClientModule,
   CoreModule.forRoot(),
-  SharedModule.forRoot()
+  SharedModule.forRoot(),
+  FontAwesomeModule
 ];
 
 @NgModule({
