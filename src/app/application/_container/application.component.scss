@@ -1,23 +1,25 @@
-#header {
-  height: 30px;
-  display: flex;
-  width: 100%;
+// #header {
+//   height: 30px;
+//   display: flex;
+//   width: 100%;
 
-  align-items: center;
-  background: linear-gradient(#444444, #333333);
-  color: #bbbbbb;
-}
+//   align-items: center;
+//   background-color: silver; //linear-gradient(#444444, #333333);
+//   color: #333;
+// }
 
-.header-fixed {
-  top: 0;
-  position: fixed;
-  z-index: 2;
-}
+// .header-fixed {
+//   top: 0;
+//   position: fixed;
+//   z-index: 2;
+// }
 
-#headerContent {
-  margin-left: 10px;
-}
+// #headerContent {
+//   margin-left: 10px;
+// }
+@import "../../../assets/scss/layouts/header-layout.scss";
 
+@include headerlayout("50", "#ccc", "#333", "left");
 #page {
   display: flex;
   background-color: green;
@@ -30,15 +32,16 @@
 
 #sideBar {
   min-height: 100%;
-  background: red;
+  background: #fff;
   display: block;
   position: relative;
 }
 .sidebar-content {
-  background: red;
+  background: #fff;
   min-height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
+  border-right: 1px solid #ccc;
 }
 .sidebar-fixed {
   position: fixed;
@@ -50,5 +53,5 @@
 #content {
   width: 100%;
   min-height: calc(100vh - 30px);
-  background: blue;
+  background: #fff;
 }

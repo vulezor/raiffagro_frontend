@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import {
   AccordionModule,
   AlertModule,
@@ -47,6 +47,7 @@ const MODULES = [
   TimepickerModule.forRoot(),
   TooltipModule.forRoot(),
   TypeaheadModule.forRoot(),
+  AngularFontAwesomeModule,
   CommonModule
 ];
 const EXPORTMODULES = [
@@ -68,7 +69,8 @@ const EXPORTMODULES = [
   TabsModule,
   TimepickerModule,
   TooltipModule,
-  TypeaheadModule
+  TypeaheadModule,
+  AngularFontAwesomeModule
 ];
 @NgModule({
   declarations: [...COMPONENTS],

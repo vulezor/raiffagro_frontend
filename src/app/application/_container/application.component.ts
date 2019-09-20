@@ -9,6 +9,11 @@ import {
   transition
   // ...
 } from '@angular/animations';
+import {
+  faHandPointLeft,
+  faHandPointRight
+} from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-application',
   animations: [
@@ -30,8 +35,8 @@ import {
           width: '50px'
         })
       ),
-      transition('open => closed', [animate('0.2s ease-out')]),
-      transition('closed => open', [animate('0.2s ease-in')])
+      transition('open => closed', [animate('0.05s ease-out')]),
+      transition('closed => open', [animate('0.05s ease-in')])
     ])
   ],
   templateUrl: './application.component.html',
@@ -39,7 +44,7 @@ import {
 })
 export class ApplicationComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
-
+  public faHandPointLeft = faHandPointLeft;
   public fixed = false;
   public isOpen = true;
 

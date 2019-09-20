@@ -80,7 +80,6 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
         )
       );
     }
-    return next.handle(this.setHeaders(request));
   }
 
   private handleExpiredAccessToken(

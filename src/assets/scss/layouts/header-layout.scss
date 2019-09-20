@@ -1,0 +1,20 @@
+@mixin headerlayout($height, $background-color, $color, $align-items) {
+  #header {
+    height: $header-height;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    background-color: silver; //linear-gradient(#444444, #333333);
+    color: $color;
+  }
+
+  .header-fixed {
+    top: 0;
+    position: fixed;
+    z-index: 2;
+  }
+
+  #headerContent {
+    margin-left: 10px;
+  }
+}
