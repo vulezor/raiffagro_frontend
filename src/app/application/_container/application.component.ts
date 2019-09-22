@@ -9,10 +9,6 @@ import {
   transition
   // ...
 } from '@angular/animations';
-import {
-  faHandPointLeft,
-  faHandPointRight
-} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-application',
@@ -22,21 +18,36 @@ import {
       state(
         'open',
         style({
-          'min-width': '180px',
-          'max-width': '180px',
-          width: '180px'
+          'min-width': '190px',
+          'max-width': '190px'
         })
       ),
       state(
         'closed',
         style({
-          'min-width': '50px',
-          'max-width': '50px',
-          width: '50px'
+          'min-width': '40px',
+          'max-width': '40px'
         })
       ),
-      transition('open => closed', [animate('0.05s ease-out')]),
-      transition('closed => open', [animate('0.05s ease-in')])
+      transition('open => closed', [animate('0.0s ease-out')]),
+      transition('closed => open', [animate('0.0s ease-in')])
+    ]),
+    trigger('openCloseSideBar', [
+      // ...
+      state(
+        'openSideBar',
+        style({
+          width: '190px'
+        })
+      ),
+      state(
+        'closedSideBar',
+        style({
+          width: '40px'
+        })
+      ),
+      transition('openSideBar => closedSideBar', [animate('0.0s ease-out')]),
+      transition('closedSideBar => openSideBar', [animate('0.0s ease-in')])
     ])
   ],
   templateUrl: './application.component.html',
@@ -44,7 +55,7 @@ import {
 })
 export class ApplicationComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
-  public faHandPointLeft = faHandPointLeft;
+
   public fixed = false;
   public isOpen = true;
 

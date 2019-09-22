@@ -1,25 +1,16 @@
-// #header {
-//   height: 30px;
-//   display: flex;
-//   width: 100%;
-
-//   align-items: center;
-//   background-color: silver; //linear-gradient(#444444, #333333);
-//   color: #333;
-// }
-
-// .header-fixed {
-//   top: 0;
-//   position: fixed;
-//   z-index: 2;
-// }
-
-// #headerContent {
-//   margin-left: 10px;
-// }
+$header-height: 50;
+$header-height-px: $header-height + px;
+$header-backgorund: #525252;
+$header-font-color: #fff;
+$header-align-items: left;
+$content-height: calc(100vh - 50px);
 @import "../../../assets/scss/layouts/header-layout.scss";
-
-@include headerlayout("50", "#ccc", "#333", "left");
+@include headerlayout(
+  $header-height-px,
+  $header-backgorund,
+  $header-font-color,
+  $header-align-items
+);
 #page {
   display: flex;
   background-color: green;
@@ -27,7 +18,7 @@
 }
 
 .page-fixed {
-  margin-top: 30px;
+  margin-top: $header-height-px;
 }
 
 #sideBar {
@@ -35,8 +26,10 @@
   background: #fff;
   display: block;
   position: relative;
+  border-right: 1px solid #ccc;
 }
 .sidebar-content {
+  position: static;
   background: #fff;
   min-height: 100%;
   overflow-x: hidden;
@@ -45,13 +38,12 @@
 }
 .sidebar-fixed {
   position: fixed;
-  top: 30;
-  left: 0;
-  height: calc(100vh - 30px);
+  top: $header-height;
+  height: $content-height;
 }
 
 #content {
   width: 100%;
-  min-height: calc(100vh - 30px);
+  min-height: $content-height;
   background: #fff;
 }

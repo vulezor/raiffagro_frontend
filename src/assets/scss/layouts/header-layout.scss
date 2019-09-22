@@ -1,4 +1,4 @@
-@mixin headerlayout($height, $background-color, $color, $align-items) {
+@mixin headerlayout($header-height, $background-color, $color, $align-items) {
   #header {
     height: $header-height;
     display: flex;
