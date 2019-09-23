@@ -24,8 +24,9 @@ import {
 import { LoginApiService } from 'app/api/login-api.service';
 import { AuthGuard } from '@mdz/guards';
 import { MainMenuComponent } from './components/layouts/main-menu/main-menu.component';
+import { MdzAutoSelsectDirective } from './directive/mdz-auto-selsect.directive';
 
-const COMPONENTS = [MainMenuComponent];
+const COMPONENTS = [MainMenuComponent, MdzAutoSelsectDirective];
 const MODULES = [
   CommonModule,
   ReactiveFormsModule,
@@ -75,7 +76,7 @@ const EXPORTMODULES = [
 @NgModule({
   declarations: [...COMPONENTS],
   imports: [...MODULES],
-  exports: [...EXPORTMODULES],
+  exports: [...EXPORTMODULES, MdzAutoSelsectDirective],
   providers: [],
   entryComponents: []
 })
