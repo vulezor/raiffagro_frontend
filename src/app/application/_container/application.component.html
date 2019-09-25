@@ -6,6 +6,12 @@
     appMdzAutoSelsect
   />
 </div>
+<pre>
+  {{ term$ }}
+</pre>
+<pre>
+  {{ results$ | async | json }}
+</pre>
 <!-- <div id="header" [ngClass]="{ 'header-fixed': fixed }">
   <div id="headerContent">
     Desktop
