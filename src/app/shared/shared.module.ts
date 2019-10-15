@@ -25,8 +25,9 @@ import { LoginApiService } from 'app/api/login-api.service';
 import { AuthGuard } from '@mdz/guards';
 import { MainMenuComponent } from './components/layouts/main-menu/main-menu.component';
 import { MdzAutoSelsectDirective } from './directive/mdz-auto-selsect.directive';
+import { TestComponent } from './components/test/test.component';
 
-const COMPONENTS = [MainMenuComponent, MdzAutoSelsectDirective];
+const COMPONENTS = [MainMenuComponent, MdzAutoSelsectDirective, TestComponent];
 const MODULES = [
   CommonModule,
   ReactiveFormsModule,
@@ -74,11 +75,11 @@ const EXPORTMODULES = [
   AngularFontAwesomeModule
 ];
 @NgModule({
-  declarations: [...COMPONENTS],
+  declarations: [...COMPONENTS, TestComponent],
   imports: [...MODULES],
-  exports: [...EXPORTMODULES, MdzAutoSelsectDirective],
+  exports: [...EXPORTMODULES, MdzAutoSelsectDirective, TestComponent],
   providers: [],
-  entryComponents: []
+  entryComponents: [TestComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

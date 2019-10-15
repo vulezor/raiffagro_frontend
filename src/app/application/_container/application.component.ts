@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '@mdz/services';
 import { Router } from '@angular/router';
 
@@ -10,6 +10,7 @@ import {
   transition
   // ...
 } from '@angular/animations';
+import { MdzAutoSelsectDirective } from 'app/shared/directive/mdz-auto-selsect.directive';
 
 @Component({
   selector: 'app-application',
@@ -55,6 +56,7 @@ import {
   styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
+  @ViewChild(MdzAutoSelsectDirective) injectComp: MdzAutoSelsectDirective;
   constructor(private authService: AuthService, private router: Router) {}
 
   public fixed = false;
