@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { text } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-test',
@@ -6,7 +7,15 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./test.component.scss']
 })
 export class TestComponent implements OnInit {
-  @Input() type = 'success';
+  @Input()
+  public text: string;
+
+  @Input()
+  public id: number;
+
+  @Input()
+  results: any;
+
   constructor() {}
 
   ngOnInit() {}

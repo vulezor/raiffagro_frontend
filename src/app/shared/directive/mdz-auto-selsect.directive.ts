@@ -22,7 +22,8 @@ import { HttpClient } from '@angular/common/http';
 import { debounceTime, switchMap, takeUntil, skip, tap } from 'rxjs/operators';
 import { TestComponent } from '../components/test/test.component';
 import { timeout } from 'q';
-
+import { Renderer2 } from '@angular/core';
+let bla;
 @Directive({
   selector: '[appMdzAutoSelsect]'
 })
@@ -35,24 +36,76 @@ export class MdzAutoSelsectDirective implements OnInit, AfterContentInit {
     this.autocomplete(200, term => this.fetch(term))
   );
 
+  // @Input() filter:
   constructor(
     private httpClient: HttpClient,
     public elementRef: ElementRef,
     private resolver: ComponentFactoryResolver,
     private target: ViewContainerRef,
     private injector: Injector,
-    private appRef: ApplicationRef
+    private appRef: ApplicationRef,
+    private render: Renderer2
   ) {
-    this.results$.subscribe(e => {
-      console.log('resolver', this.resolver);
+    // this.results$.subscribe(e => {
+    //   if (!this.componentRef) {
+    //      this.importComponent();
+    //   }
+    //    this.componentRef.instance.results = this.prepareData(e);
+    // });
+    // hide element in html sructure
+    // this.render.addClass(
+    //   this.elementRef.nativeElement,
+    //   'hide-auto-complete-original-input'
+    // );
+  }
 
-      console.log(e);
+  ngOnInit() {
+    const div = this.render.createElement('div');
+    const text = this.render.createText(String.fromCharCode(160));
+    const parent = this.elementRef.nativeElement.parentNode;
+    this.render.addClass(div, 'mdz-autocomplete');
+    this.render.addClass(div, 'form-control');
+    this.render.addClass(div, 'form-control-sm');
+
+    this.render.appendChild(div, text);
+    parent.insertBefore(div, this.elementRef.nativeElement.nextSibling);
+    this.render.listen(div, 'click', (e: any) => {
+      console.log('this.componentRef', this.componentRef);
+      if (!this.componentRef) {
+        this.importComponent();
+      }
     });
   }
 
-  ngOnInit() {}
-
   ngAfterContentInit() {}
+
+  public importComponent() {
+    this.componentRef = this.resolver
+      .resolveComponentFactory(TestComponent)
+      .create(this.injector);
+
+    // 2. Attach component to the appRef so that it's inside the ng component tree
+    this.appRef.attachView(this.componentRef.hostView);
+
+    // 3. Get DOM element from component
+    const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>)
+      .rootNodes[0] as HTMLElement;
+
+    // 4. Append DOM element to the body
+    document.body.appendChild(domElem);
+    domElem.onmousedown = e => {
+      e.stopPropagation();
+      alert('kekere - mekere');
+    };
+    bla = () => {
+      this.deleteComponent();
+    };
+    document.addEventListener('mousedown', bla);
+  }
+
+  private prepareData(obj) {
+    obj.results;
+  }
 
   @HostListener('keyup', ['$event'])
   inputChanged(event) {
@@ -67,32 +120,15 @@ export class MdzAutoSelsectDirective implements OnInit, AfterContentInit {
     // setTimeout(() => {
     //   this.componentRef.instance.type = 'kekere mekere';
     // }, 3000);
-    this.deleteComponent();
-
-    this.componentRef = this.resolver
-      .resolveComponentFactory(TestComponent)
-      .create(this.injector);
-
-    // 2. Attach component to the appRef so that it's inside the ng component tree
-    this.appRef.attachView(this.componentRef.hostView);
-
-    // 3. Get DOM element from component
-    const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>)
-      .rootNodes[0] as HTMLElement;
-
-    // 4. Append DOM element to the body
-
-    document.body.appendChild(domElem);
-
-    setTimeout(() => {
-      this.componentRef.instance.type = new Date().getTime().toString();
-    }, 2000);
+    // this.deleteComponent();
   }
 
   private deleteComponent() {
     if (this.componentRef) {
+      document.removeEventListener('mousedown', bla);
       this.appRef.detachView(this.componentRef.hostView);
       this.componentRef.destroy();
+      this.componentRef = undefined;
     }
   }
 
