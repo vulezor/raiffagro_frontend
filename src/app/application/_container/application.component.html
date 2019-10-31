@@ -1,18 +1,21 @@
-<div class="form-group" style="width:200px;margin:150px 0 0 600px;">
+<div class="form-group" style="width:500px;margin:150px 0 0 600px;">
   <input
     type="text"
     class="form-control form-control-sm"
     placeholder=""
-    appMdzAutoSelsect
+    [appMdzAutoSelsect]="selectorArray[0]"
   />
 </div>
 
-<pre>
-  {{ term$ }}
-</pre>
-<pre>
-  {{ results$ | async | json }}
-</pre>
+<div class="form-group" style="width:700px;margin:150px 0 0 600px;">
+  <input
+    type="text"
+    class="form-control form-control-sm"
+    placeholder=""
+    [appMdzAutoSelsect]="selectorArray[1]"
+  />
+</div>
+
 <!-- <div id="header" [ngClass]="{ 'header-fixed': fixed }">
   <div id="headerContent">
     Desktop

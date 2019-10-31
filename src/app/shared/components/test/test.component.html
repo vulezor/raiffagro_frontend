@@ -1,4 +1,24 @@
-<div style="position:absolute; top:0; left:0">
-  wertwert
-  <pre>{{ results | json }}</pre>
+<div
+  style="position:absolute;height:250px;border:1px solid rgb(240, 219, 219);padding:5px;z-index:5000;background-color:#fff"
+  [ngStyle]="{
+    left: this.options.left + 'px',
+    top: this.options.top + 'px',
+    width: this.options.width + 'px'
+  }"
+>
+  <div>
+    <input
+      type="text"
+      class="form-control form-control-sm"
+      placeholder=""
+      (keydown)="this.onKeydown($event)"
+    />
+  </div>
+  <div style="height:200px;overflow-y:scroll">
+    <ul class="list-group">
+      <li class="list-group-item disabled" *ngFor="let item of this.data">
+        {{ item.name }}
+      </li>
+    </ul>
+  </div>
 </div>

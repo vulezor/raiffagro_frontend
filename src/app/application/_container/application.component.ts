@@ -56,16 +56,35 @@ import { MdzAutoSelsectDirective } from 'app/shared/directive/mdz-auto-selsect.d
   styleUrls: ['./application.component.scss']
 })
 export class ApplicationComponent implements OnInit {
-  @ViewChild(MdzAutoSelsectDirective) injectComp: MdzAutoSelsectDirective;
   constructor(private authService: AuthService, private router: Router) {}
+  @ViewChild(MdzAutoSelsectDirective) injectComp: MdzAutoSelsectDirective;
 
   public fixed = false;
   public isOpen = true;
+  public selectorArray = [
+    {
+      url: 'https://swapi.co/api/people/?search=',
+      filter: {
+        additionalFilters: [],
+        searchColumns: []
+      },
+      perPage: 2,
+      direction: 'asc'
+    },
+    {
+      url: 'https://swapi.co/api/people/?search=',
+      filter: {
+        additionalFilters: [],
+        searchColumns: []
+      },
+      perPage: 2,
+      direction: 'asc'
+    }
+  ];
 
   ngOnInit() {
     // this.authService.getV
   }
-
   public toggle() {
     this.isOpen = !this.isOpen;
   }
