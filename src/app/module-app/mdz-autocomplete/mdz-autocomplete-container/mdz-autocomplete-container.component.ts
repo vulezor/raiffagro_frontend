@@ -40,10 +40,6 @@ export class MdzAutocompleteContainerComponent implements OnInit {
     console.log(this.options);
   }
 
-  public onKeydown(event) {
-    this.term$.next(event.target.value);
-  }
-
   private autocomplete(time, selector) {
     return (source$: any) => {
       return source$.pipe(
@@ -54,6 +50,12 @@ export class MdzAutocompleteContainerComponent implements OnInit {
       );
     };
   }
+
+  public onKeydown(event) {
+    this.term$.next(event.target.value);
+  }
+
+  public clickSelection() {}
 
   private fetch(term: string): Observable<any> {
     return this.http.get('https://swapi.co/api/people/?search=' + term);
