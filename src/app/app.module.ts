@@ -7,9 +7,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { MdzAutoSelsectDirective } from './shared/directive/mdz-auto-selsect.directive';
 
 const MODULES = [
   BrowserModule,

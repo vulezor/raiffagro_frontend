@@ -1,38 +1,29 @@
 import {
-  Component,
   Input,
-  ViewContainerRef,
-  ViewChild,
   Directive,
-  HostListener,
-  Renderer,
   ElementRef,
   ComponentFactoryResolver,
-  ComponentFactory,
   ComponentRef,
-  ContentChild,
   OnInit,
   EmbeddedViewRef,
   Injector,
   ApplicationRef
 } from '@angular/core';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { debounceTime, switchMap, takeUntil, skip, tap } from 'rxjs/operators';
-import { TestComponent } from '../components/test/test.component';
-import { timeout } from 'q';
+import { BehaviorSubject } from 'rxjs';
 import { Renderer2 } from '@angular/core';
+import { MdzAutocompleteContainerComponent } from './mdz-autocomplete-container/mdz-autocomplete-container.component';
+
 let componentDeleted;
+
 @Directive({
-  selector: '[appMdzAutoSelsect]'
+  selector: '[appMdzSelect]'
 })
-export class MdzAutoSelsectDirective implements OnInit {
-  // @ViewChild('container', { read: ViewContainerRef }) public container;
+export class MdzSelectDirective implements OnInit {
   private div: any;
   public term$ = new BehaviorSubject<string>('');
   public componentRef: ComponentRef<any>;
 
-  @Input('appMdzAutoSelsect') option: any;
+  @Input('appMdzSelect') option: any;
 
   constructor(
     public elementRef: ElementRef,
@@ -88,7 +79,7 @@ export class MdzAutoSelsectDirective implements OnInit {
 
   private importComponent() {
     this.componentRef = this.resolver
-      .resolveComponentFactory(TestComponent)
+      .resolveComponentFactory(MdzAutocompleteContainerComponent)
       .create(this.injector);
     this.componentRef.instance.options = this.option;
     // 2. Attach component to the appRef so that it's inside the ng component tree
@@ -107,12 +98,7 @@ export class MdzAutoSelsectDirective implements OnInit {
     componentDeleted = () => {
       this.deleteComponent();
     };
-
     document.addEventListener('mousedown', componentDeleted);
-  }
-
-  private prepareData(obj) {
-    obj.results;
   }
 
   private deleteComponent() {

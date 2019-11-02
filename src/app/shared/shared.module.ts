@@ -24,10 +24,9 @@ import {
 import { LoginApiService } from 'app/api/login-api.service';
 import { AuthGuard } from '@mdz/guards';
 import { MainMenuComponent } from './components/layouts/main-menu/main-menu.component';
-import { MdzAutoSelsectDirective } from './directive/mdz-auto-selsect.directive';
-import { TestComponent } from './components/test/test.component';
+import { MdzAutocompleteModule } from 'app/module-app/mdz-autocomplete/mdz-autocomplete.module';
 
-const COMPONENTS = [MainMenuComponent, MdzAutoSelsectDirective, TestComponent];
+const COMPONENTS = [MainMenuComponent];
 const MODULES = [
   CommonModule,
   ReactiveFormsModule,
@@ -49,6 +48,7 @@ const MODULES = [
   TimepickerModule.forRoot(),
   TooltipModule.forRoot(),
   TypeaheadModule.forRoot(),
+  MdzAutocompleteModule.forRoot(),
   AngularFontAwesomeModule,
   CommonModule
 ];
@@ -72,14 +72,14 @@ const EXPORTMODULES = [
   TimepickerModule,
   TooltipModule,
   TypeaheadModule,
-  AngularFontAwesomeModule
+  AngularFontAwesomeModule,
+  MdzAutocompleteModule
 ];
 @NgModule({
-  declarations: [...COMPONENTS, TestComponent],
+  declarations: [...COMPONENTS],
   imports: [...MODULES],
-  exports: [...EXPORTMODULES, MdzAutoSelsectDirective, TestComponent],
-  providers: [],
-  entryComponents: [TestComponent]
+  exports: [...EXPORTMODULES],
+  providers: []
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

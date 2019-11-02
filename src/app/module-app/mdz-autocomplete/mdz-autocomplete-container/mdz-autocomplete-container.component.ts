@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { text } from '@angular/core/src/render3';
 
 import { debounceTime, switchMap, takeUntil, skip } from 'rxjs/operators';
@@ -6,18 +6,24 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-test',
-  templateUrl: './test.component.html',
-  styleUrls: ['./test.component.scss']
+  selector: 'app-mdz-autocomplete-container',
+  templateUrl: './mdz-autocomplete-container.component.html',
+  styleUrls: ['./mdz-autocomplete-container.component.scss']
 })
-export class TestComponent implements OnInit {
+export class MdzAutocompleteContainerComponent implements OnInit {
   constructor(public http: HttpClient) {
     this.results$.subscribe(data => {
       this.data = this.getResult(data);
     });
+    this.term$.next('');
   }
+
   @Input()
   options: any;
+
+  @Output()
+  selectionChange = new EventEmitter();
+
   public data = [];
 
   public term$ = new BehaviorSubject<string>(null);
@@ -28,10 +34,6 @@ export class TestComponent implements OnInit {
 
   public getResult(obj) {
     return obj.results;
-  }
-
-  public onClickElem() {
-    alert('clickam');
   }
 
   ngOnInit() {

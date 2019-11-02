@@ -10,7 +10,6 @@ import {
   transition
   // ...
 } from '@angular/animations';
-import { MdzAutoSelsectDirective } from 'app/shared/directive/mdz-auto-selsect.directive';
 
 @Component({
   selector: 'app-application',
@@ -57,7 +56,6 @@ import { MdzAutoSelsectDirective } from 'app/shared/directive/mdz-auto-selsect.d
 })
 export class ApplicationComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
-  @ViewChild(MdzAutoSelsectDirective) injectComp: MdzAutoSelsectDirective;
 
   public fixed = false;
   public isOpen = true;
