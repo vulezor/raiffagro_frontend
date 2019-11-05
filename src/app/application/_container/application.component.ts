@@ -67,6 +67,7 @@ export class ApplicationComponent implements OnInit {
         searchColumns: []
       },
       perPage: 2,
+      scrolHeight: 6,
       direction: 'asc'
     },
     {
@@ -76,6 +77,7 @@ export class ApplicationComponent implements OnInit {
         searchColumns: []
       },
       perPage: 2,
+      scrolHeight: 6,
       direction: 'asc'
     }
   ];

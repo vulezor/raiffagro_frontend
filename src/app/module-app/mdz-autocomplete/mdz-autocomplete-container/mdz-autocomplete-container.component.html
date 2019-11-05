@@ -1,5 +1,5 @@
 <div
-  style="position:absolute;height:250px;border:1px solid rgb(240, 219, 219);padding:5px;z-index:5000;background-color:#fff"
+  style="position:absolute;border:1px solid rgb(240, 219, 219);padding:5px;z-index:5000;background-color:#fff;"
   [ngStyle]="{
     left: this.options.left + 'px',
     top: this.options.top + 'px',
@@ -11,12 +11,15 @@
       type="text"
       class="form-control form-control-sm"
       placeholder=""
-      (keydown)="this.onKeydown($event)"
+      (keyup)="this.onKeyup($event)"
       autofocus
     />
   </div>
-  <div style="height:200px;overflow-y:scroll">
-    <ul class="list-group">
+  <div
+    style="overflow-y:scroll;margin-top:5px;"
+    [style.height.px]="containerHeight"
+  >
+    <ul class="list-group" #myElement>
       <li class="list-group-item disabled" *ngFor="let item of this.data">
         {{ item.name }}
       </li>
