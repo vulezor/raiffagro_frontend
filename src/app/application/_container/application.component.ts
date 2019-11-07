@@ -10,6 +10,7 @@ import {
   transition
   // ...
 } from '@angular/animations';
+import { isNgTemplate } from '@angular/compiler';
 
 @Component({
   selector: 'app-application',
@@ -67,7 +68,7 @@ export class ApplicationComponent implements OnInit {
         searchColumns: []
       },
       perPage: 2,
-      scrolHeight: 6,
+      scrollHeight: 3,
       direction: 'asc'
     },
     {
@@ -77,7 +78,7 @@ export class ApplicationComponent implements OnInit {
         searchColumns: []
       },
       perPage: 2,
-      scrolHeight: 6,
+      scrollHeight: 6,
       direction: 'asc'
     }
   ];

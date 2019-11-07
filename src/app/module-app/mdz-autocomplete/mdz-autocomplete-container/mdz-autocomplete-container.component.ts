@@ -4,16 +4,13 @@ import {
   Input,
   Output,
   EventEmitter,
-  Renderer2,
   ElementRef,
   ViewChild
 } from '@angular/core';
-import { text } from '@angular/core/src/render3';
 
 import { debounceTime, switchMap, takeUntil, skip } from 'rxjs/operators';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { timeout } from 'q';
 
 @Component({
   selector: 'app-mdz-autocomplete-container',
@@ -21,26 +18,17 @@ import { timeout } from 'q';
   styleUrls: ['./mdz-autocomplete-container.component.scss']
 })
 export class MdzAutocompleteContainerComponent implements OnInit {
-  constructor(public http: HttpClient, private render: Renderer2) {
-    this.results$.subscribe(data => {
-      this.data = this.getResult(data);
-      if (!this.containerHeight && this.data.length !== 0) {
-        this.setHeightOfscrollContainer();
-      }
-    });
-    this.term$.next('');
-  }
   private term: string = null;
 
   @Input()
   options: any;
 
   @Output()
-  selectionChange = new EventEmitter();
-
+  selectionChange: EventEmitter<any> = new EventEmitter();
+  public timeout: any;
   public data = [];
 
-  public term$ = new BehaviorSubject<string>(null);
+  public term$ = new Subject<string>();
 
   public results$ = this.term$.pipe(
     this.autocomplete(200, term => {
@@ -52,6 +40,16 @@ export class MdzAutocompleteContainerComponent implements OnInit {
   private containerHeight = 0;
 
   @ViewChild('myElement') element: ElementRef;
+
+  constructor(public http: HttpClient) {
+    this.results$.subscribe(data => {
+      this.data = this.getResult(data);
+      if (!this.containerHeight && this.data.length !== 0) {
+        this.setHeightOfScrollContainer();
+      }
+    });
+    this.term$.next('');
+  }
 
   ngOnInit() {
     console.log(this.options);
@@ -65,19 +63,23 @@ export class MdzAutocompleteContainerComponent implements OnInit {
     this.term$.next(event.target.value);
   }
 
-  public clickSelection() {}
+  public clickSelection(obj) {
+    this.selectionChange.emit(obj);
+  }
 
-  private setHeightOfscrollContainer() {
-    setTimeout(() => {
+  private setHeightOfScrollContainer() {
+    this.timeout = setTimeout(() => {
       this.element.nativeElement.parentElement.addEventListener(
         'scroll',
         this.scrollTrigger.bind(this)
       );
-      this.containerHeight =
-        this.options.scrolHeight *
-          this.element.nativeElement.children[0].clientHeight +
-        this.options.scrolHeight +
-        1;
+      if (this.element.nativeElement.children[0]) {
+        this.containerHeight =
+          this.options.scrollHeight *
+            this.element.nativeElement.children[0].clientHeight +
+          this.options.scrollHeight +
+          1;
+      }
     });
   }
 
@@ -90,7 +92,6 @@ export class MdzAutocompleteContainerComponent implements OnInit {
       this.fetch(this.term)
         .pipe()
         .subscribe(data => {
-          console.log(data);
           this.data = this.data.concat(this.getResult(data));
         });
     }

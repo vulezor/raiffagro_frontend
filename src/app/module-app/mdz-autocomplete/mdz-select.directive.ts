@@ -7,22 +7,22 @@ import {
   OnInit,
   EmbeddedViewRef,
   Injector,
-  ApplicationRef
+  ApplicationRef,
+  ɵConsole
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { Renderer2 } from '@angular/core';
 import { MdzAutocompleteContainerComponent } from './mdz-autocomplete-container/mdz-autocomplete-container.component';
-
-let componentDeleted;
 
 @Directive({
   selector: '[appMdzSelect]'
 })
 export class MdzSelectDirective implements OnInit {
+  private multiselect = true;
   private div: any;
-  public term$ = new BehaviorSubject<string>('');
+  // public term$ = new Subject<string>();
   public componentRef: ComponentRef<any>;
-
+  private value: any;
   @Input('appMdzSelect') option: any;
 
   constructor(
@@ -40,14 +40,15 @@ export class MdzSelectDirective implements OnInit {
 
   ngOnInit() {
     this.div = this.generateAutoCompleteElement();
+
     Object.assign(this.option, {
       top: this.div.offsetTop + this.div.offsetHeight,
       left: this.div.offsetLeft,
       height: this.div.offsetHeight,
       width: this.div.offsetWidth
     });
+
     this.render.listen(this.div, 'click', (e: any) => {
-      console.log('this.componentRef', this.componentRef);
       if (!this.componentRef) {
         this.importComponent();
       } else {
@@ -60,28 +61,62 @@ export class MdzSelectDirective implements OnInit {
   }
 
   private generateAutoCompleteElement() {
-    const div = this.render.createElement('div'),
-      divAddOn = this.render.createElement('div'),
-      text = this.render.createText(String.fromCharCode(160)),
+    const div = this.createDivContainer(),
+      divAddOn = this.addAddOn(),
       parent = this.elementRef.nativeElement.parentNode;
-
-    this.render.addClass(div, 'mdz-autocomplete');
-    this.render.addClass(div, 'form-control');
-    this.render.addClass(div, 'form-control-sm');
-    this.render.addClass(divAddOn, 'mdz-autocomplete-arrow');
-
-    this.render.appendChild(div, text);
+    this.value = this.createText(String.fromCharCode(160));
+    this.addClass(div, ['mdz-autocomplete', 'form-control', 'form-control-sm']);
+    this.render.appendChild(div, this.value);
     this.render.appendChild(div, divAddOn);
-
     parent.insertBefore(div, this.elementRef.nativeElement);
     return div;
+  }
+
+  private createDivContainer() {
+    return this.render.createElement('div');
+  }
+
+  private createText(str: string) {
+    return this.render.createText(str);
+  }
+
+  private addClass(elem, val: string | string[]) {
+    if (val instanceof Array) {
+      val.forEach(item => {
+        this.render.addClass(elem, item);
+      });
+    } else {
+      this.render.addClass(elem, val);
+    }
+  }
+
+  private addAddOn() {
+    const divAddOn = this.createDivContainer();
+    this.addClass(divAddOn, 'mdz-autocomplete-arrow');
+    return divAddOn;
+  }
+
+  public selectionChange(obj) {
+    console.log('radi', obj, 'radi');
   }
 
   private importComponent() {
     this.componentRef = this.resolver
       .resolveComponentFactory(MdzAutocompleteContainerComponent)
       .create(this.injector);
+
     this.componentRef.instance.options = this.option;
+
+    this.componentRef.instance.selectionChange.subscribe(obj => {
+      this.render.removeChild(this.div, this.value);
+      if (this.multiselect) {
+      } else {
+        this.value = this.createText(obj.name);
+      }
+
+      this.render.appendChild(this.div, this.value);
+    });
+
     // 2. Attach component to the appRef so that it's inside the ng component tree
     this.appRef.attachView(this.componentRef.hostView);
 
@@ -95,15 +130,15 @@ export class MdzSelectDirective implements OnInit {
     // 4. Append DOM element to the body
     document.body.appendChild(domElem);
 
-    componentDeleted = () => {
-      this.deleteComponent();
-    };
-    document.addEventListener('mousedown', componentDeleted);
+    document.addEventListener('mousedown', this.deleteComponent.bind(this));
   }
 
   private deleteComponent() {
     if (this.componentRef) {
-      document.removeEventListener('mousedown', componentDeleted);
+      document.removeEventListener(
+        'mousedown',
+        this.deleteComponent.bind(this)
+      );
       this.appRef.detachView(this.componentRef.hostView);
       this.componentRef.destroy();
       this.componentRef = undefined;

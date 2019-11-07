@@ -20,7 +20,11 @@
     [style.height.px]="containerHeight"
   >
     <ul class="list-group" #myElement>
-      <li class="list-group-item disabled" *ngFor="let item of this.data">
+      <li
+        class="list-group-item disabled"
+        *ngFor="let item of this.data"
+        (click)="clickSelection(item)"
+      >
         {{ item.name }}
       </li>
     </ul>
