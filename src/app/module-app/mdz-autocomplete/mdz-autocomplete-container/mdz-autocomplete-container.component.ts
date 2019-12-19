@@ -6,16 +6,16 @@ import {
   EventEmitter,
   ElementRef,
   ViewChild
-} from '@angular/core';
+} from "@angular/core";
 
-import { debounceTime, switchMap, takeUntil, skip } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { debounceTime, switchMap, takeUntil, skip } from "rxjs/operators";
+import { Observable, Subject } from "rxjs";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
-  selector: 'app-mdz-autocomplete-container',
-  templateUrl: './mdz-autocomplete-container.component.html',
-  styleUrls: ['./mdz-autocomplete-container.component.scss']
+  selector: "app-mdz-autocomplete-container",
+  templateUrl: "./mdz-autocomplete-container.component.html",
+  styleUrls: ["./mdz-autocomplete-container.component.scss"]
 })
 export class MdzAutocompleteContainerComponent implements OnInit {
   private term: string = null;
@@ -39,7 +39,7 @@ export class MdzAutocompleteContainerComponent implements OnInit {
 
   private containerHeight = 0;
 
-  @ViewChild('myElement') element: ElementRef;
+  @ViewChild("myElement") element: ElementRef;
 
   constructor(public http: HttpClient) {
     this.results$.subscribe(data => {
@@ -48,13 +48,13 @@ export class MdzAutocompleteContainerComponent implements OnInit {
         this.setHeightOfScrollContainer();
       }
     });
-    this.term$.next('');
+    this.term$.next("");
   }
 
   ngOnInit() {
     console.log(this.options);
   }
-
+  public template = "listView";
   public getResult(obj) {
     return obj.results;
   }
@@ -64,21 +64,24 @@ export class MdzAutocompleteContainerComponent implements OnInit {
   }
 
   public clickSelection(obj) {
+    console.log("clickSelection", obj);
     this.selectionChange.emit(obj);
   }
 
   private setHeightOfScrollContainer() {
     this.timeout = setTimeout(() => {
-      this.element.nativeElement.parentElement.addEventListener(
-        'scroll',
-        this.scrollTrigger.bind(this)
-      );
-      if (this.element.nativeElement.children[0]) {
-        this.containerHeight =
-          this.options.scrollHeight *
-            this.element.nativeElement.children[0].clientHeight +
-          this.options.scrollHeight +
-          1;
+      if (this.element) {
+        this.element.nativeElement.parentElement.addEventListener(
+          "scroll",
+          this.scrollTrigger.bind(this)
+        );
+        if (this.element.nativeElement.children[0]) {
+          this.containerHeight =
+            this.options.scrollHeight *
+              this.element.nativeElement.children[0].clientHeight +
+            this.options.scrollHeight +
+            1;
+        }
       }
     });
   }
@@ -109,6 +112,6 @@ export class MdzAutocompleteContainerComponent implements OnInit {
   }
 
   private fetch(term: string): Observable<any> {
-    return this.http.get('https://swapi.co/api/people/?search=' + term);
+    return this.http.get("https://swapi.co/api/people/?search=" + term);
   }
 }

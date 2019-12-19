@@ -7,23 +7,21 @@ import {
   OnInit,
   EmbeddedViewRef,
   Injector,
-  ApplicationRef,
-  ɵConsole
-} from '@angular/core';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Renderer2 } from '@angular/core';
-import { MdzAutocompleteContainerComponent } from './mdz-autocomplete-container/mdz-autocomplete-container.component';
+  ApplicationRef
+} from "@angular/core";
+import { Renderer2 } from "@angular/core";
+import { MdzAutocompleteContainerComponent } from "./mdz-autocomplete-container/mdz-autocomplete-container.component";
+import { MdzAutocompleteOptions } from "./interfaces";
 
 @Directive({
-  selector: '[appMdzSelect]'
+  selector: "[appMdzSelect]"
 })
 export class MdzSelectDirective implements OnInit {
-  private multiselect = true;
+  private multiselect = false;
   private div: any;
-  // public term$ = new Subject<string>();
   public componentRef: ComponentRef<any>;
   private value: any;
-  @Input('appMdzSelect') option: any;
+  @Input("appMdzSelect") option: MdzAutocompleteOptions;
 
   constructor(
     public elementRef: ElementRef,
@@ -34,50 +32,55 @@ export class MdzSelectDirective implements OnInit {
   ) {
     this.render.addClass(
       this.elementRef.nativeElement,
-      'hide-auto-complete-original-input'
+      "hide-auto-complete-original-input"
     );
   }
 
   ngOnInit() {
     this.div = this.generateAutoCompleteElement();
+    this.extendOption(this.div);
 
-    Object.assign(this.option, {
-      top: this.div.offsetTop + this.div.offsetHeight,
-      left: this.div.offsetLeft,
-      height: this.div.offsetHeight,
-      width: this.div.offsetWidth
-    });
-
-    this.render.listen(this.div, 'click', (e: any) => {
+    this.render.listen(this.div, "click", (e: any) => {
       if (!this.componentRef) {
         this.importComponent();
       } else {
         this.deleteComponent();
       }
     });
-    this.render.listen(this.div, 'mousedown', (e: any) => {
+    this.render.listen(this.div, "mousedown", (e: any) => {
       e.stopPropagation();
     });
   }
 
-  private generateAutoCompleteElement() {
-    const div = this.createDivContainer(),
-      divAddOn = this.addAddOn(),
-      parent = this.elementRef.nativeElement.parentNode;
-    this.value = this.createText(String.fromCharCode(160));
-    this.addClass(div, ['mdz-autocomplete', 'form-control', 'form-control-sm']);
+  private generateAutoCompleteElement(): any {
+    const div: any = this.render.createElement("div"),
+      divAddOn: any = this.render.createElement("div");
+
+    this.value = this.render.createText(String.fromCharCode(160));
+
+    this.addClass(div, ["mdz-autocomplete", "form-control", "form-control-sm"]);
+    this.addClass(divAddOn, "mdz-autocomplete-arrow");
+
     this.render.appendChild(div, this.value);
     this.render.appendChild(div, divAddOn);
-    parent.insertBefore(div, this.elementRef.nativeElement);
+    this.render.insertBefore(
+      this.elementRef.nativeElement.parentNode,
+      div,
+      this.elementRef.nativeElement
+    );
     return div;
   }
 
-  private createDivContainer() {
-    return this.render.createElement('div');
-  }
-
-  private createText(str: string) {
-    return this.render.createText(str);
+  /**
+   *@description extend this.option object
+   */
+  private extendOption(div: any): void {
+    Object.assign(this.option, {
+      top: div.offsetTop + div.offsetHeight,
+      left: div.offsetLeft,
+      height: this.option.height ? this.option.height : div.offsetHeight,
+      width: this.option.width ? this.option.width : div.offsetWidth
+    });
   }
 
   private addClass(elem, val: string | string[]) {
@@ -90,14 +93,8 @@ export class MdzSelectDirective implements OnInit {
     }
   }
 
-  private addAddOn() {
-    const divAddOn = this.createDivContainer();
-    this.addClass(divAddOn, 'mdz-autocomplete-arrow');
-    return divAddOn;
-  }
-
   public selectionChange(obj) {
-    console.log('radi', obj, 'radi');
+    console.log("radi", obj, "radi");
   }
 
   private importComponent() {
@@ -108,21 +105,28 @@ export class MdzSelectDirective implements OnInit {
     this.componentRef.instance.options = this.option;
 
     this.componentRef.instance.selectionChange.subscribe(obj => {
+      console.log("U direktivi", obj);
       this.render.removeChild(this.div, this.value);
       if (this.multiselect) {
       } else {
-        this.value = this.createText(obj.name);
+        console.log("radi", obj, "radi");
+        this.value = this.render.createText(obj.name);
       }
 
       this.render.appendChild(this.div, this.value);
+      var clickEvent = document.createEvent("MouseEvents");
+      clickEvent.initEvent("mousedown", true, true);
+      document.dispatchEvent(clickEvent);
     });
 
-    // 2. Attach component to the appRef so that it's inside the ng component tree
+    // 1. Attach component to the appRef so that it's inside the ng component tree
     this.appRef.attachView(this.componentRef.hostView);
 
-    // 3. Get DOM element from component
+    // 2. Get DOM element from component
     const domElem = (this.componentRef.hostView as EmbeddedViewRef<any>)
       .rootNodes[0] as HTMLElement;
+
+    // 4. On do DOM element attach event on mouse down.
     domElem.onmousedown = e => {
       e.stopPropagation();
     };
@@ -130,18 +134,22 @@ export class MdzSelectDirective implements OnInit {
     // 4. Append DOM element to the body
     document.body.appendChild(domElem);
 
-    document.addEventListener('mousedown', this.deleteComponent.bind(this));
+    // 5. Add event listener mousedown on to delete component
+    document.addEventListener("mousedown", this.deleteComponent.bind(this));
   }
 
+  /**
+   * @delete component from document
+   */
   private deleteComponent() {
     if (this.componentRef) {
       document.removeEventListener(
-        'mousedown',
+        "mousedown",
         this.deleteComponent.bind(this)
       );
       this.appRef.detachView(this.componentRef.hostView);
       this.componentRef.destroy();
-      this.componentRef = undefined;
+      this.componentRef = null;
     }
   }
 }
