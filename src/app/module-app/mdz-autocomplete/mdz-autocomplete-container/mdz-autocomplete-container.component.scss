@@ -3,3 +3,72 @@
     line-height: 0.5;
   }
 }
+
+.hide-auto-complete-original-input {
+  visibility: hidden;
+  position: absolute;
+  top: 0px;
+}
+
+.mdz-autocomplete {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-radius: 3px;
+  /* line-height: 1.23px;*/
+  //padding: 5px;
+  position: relative;
+}
+
+input.form-control:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none !important;
+  outline-width: 0 !important;
+  box-shadow: none;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+}
+
+.mdz-autocomplete-arrow {
+  border-left: 1px solid #ced4da;
+  width: 20px;
+  height: 100%;
+  background: rgba(255, 255, 255, 1);
+  background: -moz-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(230, 230, 230, 1) 100%
+  );
+  background: -webkit-gradient(
+    left top,
+    left bottom,
+    color-stop(0%, rgba(255, 255, 255, 1)),
+    color-stop(100%, rgba(230, 230, 230, 1))
+  );
+  background: -webkit-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(230, 230, 230, 1) 100%
+  );
+  background: -o-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(230, 230, 230, 1) 100%
+  );
+  background: -ms-linear-gradient(
+    top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(230, 230, 230, 1) 100%
+  );
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(230, 230, 230, 1) 100%
+  );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e6e6e6', GradientType=0 );
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border-radius: 0px 3px 3px 0px;
+}

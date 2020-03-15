@@ -1,14 +1,14 @@
-import { Injectable } from '@angular/core';
-import { LoginCredentials, User, TokenInfo, TokenData } from '@mdz/models';
-import { ReplaySubject, Observable, of, BehaviorSubject } from 'rxjs';
+import { Injectable } from "@angular/core";
+import { LoginCredentials, User, TokenInfo, TokenData } from "@mdz/models";
+import { ReplaySubject, Observable, of, BehaviorSubject } from "rxjs";
 
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { LoginApiService } from 'app/api/login-api.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { switchMap, catchError, tap, take } from 'rxjs/operators';
-import { TokenStorageService } from './token-storage.service';
-import { Router } from '@angular/router';
-const DEFAULT_REDIRECT_URL = '/';
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { LoginApiService } from "app/api/login-api.service";
+import { untilDestroyed } from "ngx-take-until-destroy";
+import { switchMap, catchError, tap, take } from "rxjs/operators";
+import { TokenStorageService } from "./token-storage.service";
+import { Router } from "@angular/router";
+const DEFAULT_REDIRECT_URL = "/";
 @Injectable()
 export class AuthService {
   private currentUser: ReplaySubject<any> = new ReplaySubject<any>(1);
@@ -31,6 +31,7 @@ export class AuthService {
         tokenInfo.authentificationToken = loginData.token_data.access_token;
         tokenInfo.refreshToken = loginData.token_data.refresh_token;
         this.tokens.updateTokens(tokenInfo);
+
         return this.setUser().pipe(switchMap(r => of(true)));
       }),
       catchError(e => {
@@ -43,7 +44,7 @@ export class AuthService {
   public logout() {
     this.tokens.clearTokens();
     this.currentUser.next(null);
-    this.router.navigate(['/public/login']);
+    this.router.navigate(["/public/login"]);
   }
 
   private setUser(): Observable<any> {
@@ -60,10 +61,10 @@ export class AuthService {
       this.tokens.getAuthentificationToken() &&
       this.tokens.getRefreshToken()
     ) {
-      console.log('attemp auto-login');
+      console.log("attemp auto-login");
       return this.setUser().pipe(switchMap(r => of(true)));
     }
-    return of('');
+    return of("");
   }
 
   public getRedirectUrl() {

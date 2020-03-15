@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy } from "@angular/core";
 import {
   HttpClient,
   HttpRequest,
@@ -7,14 +7,14 @@ import {
   HttpInterceptor,
   HttpEvent,
   HttpHeaders
-} from '@angular/common/http';
+} from "@angular/common/http";
 import {
   NEVER,
   Observable,
   ReplaySubject,
   throwError,
   BehaviorSubject
-} from 'rxjs';
+} from "rxjs";
 import {
   switchMap,
   catchError,
@@ -23,14 +23,14 @@ import {
   filter,
   delay,
   retry
-} from 'rxjs/operators';
-import { TokenStorageService } from '../core/services/token-storage.service';
-import { TokenInfo } from '@mdz/models';
-import { TypeaheadOptions } from 'ngx-bootstrap';
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Router } from '@angular/router';
+} from "rxjs/operators";
+import { TokenStorageService } from "../core/services/token-storage.service";
+import { TokenInfo } from "@mdz/models";
+import { TypeaheadOptions } from "ngx-bootstrap";
+import { untilDestroyed } from "ngx-take-until-destroy";
+import { Router } from "@angular/router";
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
   private isRefreshingToken = false;
@@ -46,7 +46,7 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
   private setHeaders(request: HttpRequest<any>) {
     return (request = request.clone({
       setHeaders: {
-        accept: 'application/json',
+        accept: "application/json",
         Authorization: `Bearer ${this.tokens.getAuthentificationToken()}`
       }
     }));
@@ -57,9 +57,10 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (
-      !request.url.includes('/api/') ||
-      request.url.includes('/assets/') ||
-      request.url.includes('/api/refresh_token')
+      !request.url.includes("/api/") ||
+      request.url.includes("/api/login") ||
+      request.url.includes("/assets/") ||
+      request.url.includes("/api/refresh_token")
     ) {
       return next.handle(request);
     }
@@ -90,8 +91,8 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
       this.isRefreshingToken = true;
       this.tokenSubject.next(false);
 
-      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const position = request.url.search('/api/');
+      const headers = new HttpHeaders({ "Content-Type": "application/json" });
+      const position = request.url.search("/api/");
       const baseUrl = request.url.substring(0, position);
       const refreshUrl = `${baseUrl}/api/refresh_token`;
       return this.http
@@ -136,8 +137,9 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
   ) {
     if (
       (error as HttpErrorResponse).status === 401 ||
-      (error as HttpErrorResponse).status === 401 ||
+      (error as HttpErrorResponse).status === 403 ||
       (error as HttpErrorResponse).status === 500 ||
+      (error as HttpErrorResponse).status === 0 ||
       this.tokens.getRefreshToken() === null
     ) {
       this.navigateToLoginAndClearTokens();
@@ -153,7 +155,7 @@ export class HttpInterceptorService implements HttpInterceptor, OnDestroy {
   }
 
   private navigateToLoginAndClearTokens() {
-    this.router.navigate(['public/login']).then(() => {
+    this.router.navigate(["public/login"]).then(() => {
       this.tokens.clearTokens();
     });
   }

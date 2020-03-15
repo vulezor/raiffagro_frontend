@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   CanActivate,
   ActivatedRouteSnapshot,
@@ -7,10 +7,10 @@ import {
   Route,
   CanLoad,
   UrlSegment
-} from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from '@mdz/services';
-import { map, tap, switchMap } from 'rxjs/operators';
+} from "@angular/router";
+import { Observable } from "rxjs";
+import { AuthService } from "@mdz/services";
+import { map, tap, switchMap } from "rxjs/operators";
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanLoad {
@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     route: Route,
     segments: UrlSegment[]
   ): Observable<boolean> | Promise<boolean> | boolean {
-    const url = segments.map(segment => segment.path).join('/');
+    const url = segments.map(segment => segment.path).join("/");
     return this.handleLoginRedirect(url);
   }
 
@@ -53,7 +53,7 @@ export class AuthGuard implements CanActivate, CanLoad {
       tap(loggedIn => {
         if (!loggedIn) {
           this.authService.setRedirectUrl(url);
-          this.router.navigate(['public/login']);
+          this.router.navigate(["public/login"]);
         }
       })
     );

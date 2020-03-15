@@ -64,7 +64,6 @@ export class MdzAutocompleteContainerComponent implements OnInit {
   }
 
   public clickSelection(obj) {
-    console.log("clickSelection", obj);
     this.selectionChange.emit(obj);
   }
 
