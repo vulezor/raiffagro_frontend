@@ -7,7 +7,7 @@ import {
   OnInit,
   EmbeddedViewRef,
   Injector,
-  ApplicationRef
+  ApplicationRef,
 } from "@angular/core";
 import { Renderer2 } from "@angular/core";
 import { MdzAutocompleteContainerComponent } from "./mdz-autocomplete-container/mdz-autocomplete-container.component";
@@ -20,15 +20,16 @@ import { NG_VALIDATORS, FormControl } from "@angular/forms";
     {
       provide: NG_VALIDATORS,
       useExisting: MdzSelectDirective,
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class MdzSelectDirective implements OnInit {
   private multiselect = false;
   private elem: HTMLElement;
   public componentRef: ComponentRef<any>;
   private value: any;
+
   @Input("appMdzSelect") option: MdzAutocompleteOptions;
 
   constructor(
@@ -55,6 +56,7 @@ export class MdzSelectDirective implements OnInit {
         this.deleteComponent();
       }
     });
+
     this.render.listen(this.elem, "mousedown", (e: any) => {
       e.stopPropagation();
     });
@@ -78,8 +80,9 @@ export class MdzSelectDirective implements OnInit {
     this.addClass(elem, [
       "mdz-autocomplete",
       "form-control",
-      "form-control-sm"
+      "form-control-sm",
     ]);
+
     this.addClass(elemAddOn, "mdz-autocomplete-arrow");
 
     this.render.appendChild(elem, this.value);
@@ -93,30 +96,16 @@ export class MdzSelectDirective implements OnInit {
   }
 
   /**
-   *@description extend this.option object
+   * @param elem imported html element
+   * @description extend this.option object
    */
   private extendOption(elem: HTMLElement): void {
     Object.assign(this.option, {
       top: elem.offsetTop + elem.offsetHeight,
       left: elem.offsetLeft,
       height: this.option.height ? this.option.height : elem.offsetHeight,
-      width: this.option.width ? this.option.width : elem.offsetWidth
+      width: this.option.width ? this.option.width : elem.offsetWidth,
     });
-  }
-
-  /**
-   * @param elem any
-   * @param val string
-   * @description add class name or names to html element
-   */
-  private addClass(elem: HTMLElement, val: string | string[]) {
-    if (val instanceof Array) {
-      val.forEach(item => {
-        this.render.addClass(elem, item);
-      });
-    } else {
-      this.render.addClass(elem, val);
-    }
   }
 
   public selectionChange(obj) {
@@ -130,7 +119,7 @@ export class MdzSelectDirective implements OnInit {
 
     this.componentRef.instance.options = this.option;
 
-    this.componentRef.instance.selectionChange.subscribe(obj => {
+    this.componentRef.instance.selectionChange.subscribe((obj) => {
       this.render.removeChild(this.elem, this.value);
       if (this.multiselect) {
       } else {
@@ -149,7 +138,7 @@ export class MdzSelectDirective implements OnInit {
     >).rootNodes[0] as HTMLElement;
 
     // 4. On do DOM element attach event on mouse down.
-    domElem.onmousedown = e => {
+    domElem.onmousedown = (e) => {
       e.stopPropagation();
     };
 
@@ -161,7 +150,7 @@ export class MdzSelectDirective implements OnInit {
   }
 
   /**
-   * @delete component from document
+   * @description component from document
    */
   private deleteComponent() {
     if (this.componentRef) {
@@ -172,6 +161,21 @@ export class MdzSelectDirective implements OnInit {
       this.appRef.detachView(this.componentRef.hostView);
       this.componentRef.destroy();
       this.componentRef = null;
+    }
+  }
+
+  /**
+   * @param elem any
+   * @param val string
+   * @description add class name or names to html element
+   */
+  private addClass(elem: HTMLElement, val: string | string[]) {
+    if (val instanceof Array) {
+      val.forEach((item) => {
+        this.render.addClass(elem, item);
+      });
+    } else {
+      this.render.addClass(elem, val);
     }
   }
 }

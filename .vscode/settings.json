@@ -4,5 +4,9 @@
     "editor.autoSurround": "never",
     "editor.autoClosingQuotes": "never",
     "prettier.eslintIntegration": true,
-    "prettier.tslintIntegration": true
+    "prettier.tslintIntegration": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "prettier.tabWidth": 4,
+    "editor.detectIndentation": false
 }

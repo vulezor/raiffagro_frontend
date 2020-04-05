@@ -7,7 +7,7 @@ import {
   state,
   style,
   animate,
-  transition
+  transition,
   // ...
 } from "@angular/animations";
 import { isNgTemplate } from "@angular/compiler";
@@ -22,39 +22,39 @@ import { MdzAutocompleteOptions } from "app/module-app/mdz-autocomplete/interfac
         "open",
         style({
           "min-width": "190px",
-          "max-width": "190px"
+          "max-width": "190px",
         })
       ),
       state(
         "closed",
         style({
           "min-width": "40px",
-          "max-width": "40px"
+          "max-width": "40px",
         })
       ),
       transition("open => closed", [animate("0.0s ease-out")]),
-      transition("closed => open", [animate("0.0s ease-in")])
+      transition("closed => open", [animate("0.0s ease-in")]),
     ]),
     trigger("openCloseSideBar", [
       // ...
       state(
         "openSideBar",
         style({
-          width: "190px"
+          width: "190px",
         })
       ),
       state(
         "closedSideBar",
         style({
-          width: "40px"
+          width: "40px",
         })
       ),
       transition("openSideBar => closedSideBar", [animate("0.0s ease-out")]),
-      transition("closedSideBar => openSideBar", [animate("0.0s ease-in")])
-    ])
+      transition("closedSideBar => openSideBar", [animate("0.0s ease-in")]),
+    ]),
   ],
   templateUrl: "./application.component.html",
-  styleUrls: ["./application.component.scss"]
+  styleUrls: ["./application.component.scss"],
 })
 export class ApplicationComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
@@ -63,16 +63,16 @@ export class ApplicationComponent implements OnInit {
   public isOpen = true;
   public selectorArray: MdzAutocompleteOptions[] = [
     {
-      width: 590,
+      //width: 590,
       url: "https://swapi.co/api/people/?search=",
       filter: {
         additionalFilters: [],
-        searchColumns: []
+        searchColumns: ["name"],
       },
-      perPage: 2,
-      scrollHeight: 3,
-      direction: "asc"
-    }
+      perPage: 5,
+      scrollHeight: 4,
+      direction: "asc",
+    },
   ];
 
   ngOnInit() {
